@@ -1,32 +1,37 @@
-// // Add bubble to the top of the page.
-// var bubbleDOM = document.createElement('div');
-// bubbleDOM.setAttribute('class', 'selection_bubble');
-// document.body.appendChild(bubbleDOM);
-
-// // Lets listen to mouseup DOM events.
-// document.addEventListener('mouseup', function (e) {
-//   var selection = window.getSelection().toString();
-//   if (selection.length > 0) {
-//     renderBubble(e.clientX, e.clientY, selection);
-//   }
-//   console.log("mouse up");
-// }, false);
-
-
-// // Close the bubble when we click on the screen.
-// document.addEventListener('mousedown', function (e) {
-//   bubbleDOM.style.visibility = 'hidden';
-//   console.log("mouse down");
-// }, false);
-
-// // Move that bubble to the appropriate location.
-// function renderBubble(mouseX, mouseY, selection) {
-//   bubbleDOM.innerHTML = selection;
-//   bubbleDOM.style.top = mouseY + 'px';
-//   bubbleDOM.style.left = mouseX + 'px';
-//   bubbleDOM.style.visibility = 'visible';
-// }
 
 chrome.extension.getBackgroundPage().console.log('foo');
 
-console.log("test");
+function getEXData(currency, amount) {
+  var xhr = new XMLHttpRequest();
+
+  //xhr.open(method, url, true)
+  user = "hackthenorth067";
+  pass = "Waterloo1756";
+  xhr.open("GET", "https://xecdapi.xe.com/v1/convert_from.json/?from="+currency+"&to=CAD&amount="+amount, true);
+  xhr.withCredentials = true;
+  xhr.setRequestHeader("Authorization", "Basic " + btoa(user+":"+pass));
+  
+
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4) {
+      var resp = JSON.parse(xhr.responseText);
+      chrome.extension.getBackgroundPage().console.log(resp.to.mid); //this
+    } else {
+      alert("Request Failed. Check console for details.");
+      var resp = JSON.parse(xhr.responseText);
+      chrome.extension.getBackgroundPage().console.log(resp.message);
+    }
+  }
+  xhr.send();
+  console.log(xhr.response);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var button = document.getElementById('test');
+
+  button.addEventListener('click', function() {
+    getEXData("USD", "100");
+  });
+
+
+});

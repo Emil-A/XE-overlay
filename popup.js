@@ -27,7 +27,6 @@ function getExData(currency, amount) {
   chrome.extension.getBackgroundPage().console.log("fetching EX data");
   var xhr = new XMLHttpRequest();
 
-  //xhr.open(method, url, true)
   user = "hackthenorth067";
   pass = "Waterloo1756";
   xhr.open("GET", "https://xecdapi.xe.com/v1/convert_from.json/?from=" + currency + "&to=CAD&amount=" + amount, true);
@@ -64,6 +63,5 @@ document.addEventListener('DOMContentLoaded', function() {
     checkCurrency("USD 100");
     // getExData("USD", "100");
   });
-
 
 });

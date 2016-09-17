@@ -98,7 +98,7 @@ function getExData(currency, amount) {
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4) {
       var resp = JSON.parse(xhr.responseText);
-      console.log(resp.to.mid);
+      console.log(resp.to.mid); //this
     }
   }
   xhr.send();

@@ -92,13 +92,36 @@ function renderStatus(statusText) {
   document.getElementById('status').textContent = statusText;
 }
 
+function checkCurrency(text) {
+  var matches = text.match(/\d+/g);
+  if (matches == null) return; // No numbers in input, do nothing
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", chrome.extension.getURL('./currencies.json'), true);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4) {
+      var currenciesList = JSON.parse(xhr.responseText).currencies;
+      for (var i = 0; i < currenciesList.length; i++) {
+        var currency = currenciesList[i];
+        if ((text.indexOf(currency.iso) !== -1 || text.indexOf(currency.currency_name) !== -1) && !currency.obsolete) { 
+          //Currency symbol in text, scrape all digits 
+          var amount = text.match(/\d/g);
+          amount = amount.join("");
+
+          getExData(currency.iso, amount);
+        }
+      }
+    }
+  }
+  xhr.send();
+}
+
 function getExData(currency, amount) {
   var xhr = new XMLHttpRequest();
   xhr.open("GET", "https://xecdapi.xe.com/v1/convert_from.json/?from="+currency+"&to=CAD&amount="+amount, true);
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4) {
       var resp = JSON.parse(xhr.responseText);
-      console.log(resp.to.mid); //this
+      console.log(resp.to[0].mid); //this
     }
   }
   xhr.send();
@@ -108,7 +131,8 @@ document.addEventListener('DOMContentLoaded', function() {
   var button = document.getElementById('test');
 
   button.addEventListener('click', function() {
-    getExData("USD", "100");
+    checkCurrency("USD 100");
+    //getExData("USD", "100");
   });
 
   getCurrentTabUrl(function(url) {

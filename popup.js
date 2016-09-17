@@ -92,7 +92,25 @@ function renderStatus(statusText) {
   document.getElementById('status').textContent = statusText;
 }
 
+function getExData(currency, amount) {
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "https://xecdapi.xe.com/v1/convert_from.json/?from="+currency+"&to=CAD&amount="+amount, true);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4) {
+      var resp = JSON.parse(xhr.responseText);
+      console.log(resp.to.mid);
+    }
+  }
+  xhr.send();
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+  var button = document.getElementById('test');
+
+  button.addEventListener('click', function() {
+    getExData("USD", "100");
+  });
+
   getCurrentTabUrl(function(url) {
     // Put the image URL in Google search.
     renderStatus('Performing Google Image search for ' + url);

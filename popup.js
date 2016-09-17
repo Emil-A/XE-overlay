@@ -24,7 +24,7 @@ function checkCurrency(text) {
 }
 
 function getExData(currency, amount) {
-  console.log("fetching EX data");
+  chrome.extension.getBackgroundPage().console.log("fetching EX data");
   var xhr = new XMLHttpRequest();
 
   //xhr.open(method, url, true)

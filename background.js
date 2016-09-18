@@ -1,17 +1,25 @@
-chrome.extension.getBackgroundPage().console.log('extension opened');
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+		var value;
+		if(message.type == "text") {
+			alert("2");
+			//value = checkCurrency(message.text);
+			alert("6"+checkCurrency(message.text));
+			alert("7"+value.currency);
+			if(value.currency != null && value.amount != null) {
+				alert("3");// stops here!!
+				//Respond open button
+				chrome.runtime.sendMessage({type: "display"});
+			}
+		}
 
-chrome.runtime.onMessage.addListener(
-	function(message, sender, sendResponse) {
-		switch(message.type) {
-			case "text":
-				temp = message.text;
-				checkCurrency(temp);
-				break;
-			default:
-			  console.error("Unrecognised message: ", message);
+		if(message.type == "submit") {
+			var exchange = getExdata(value.currency, value.amount);
+			chrome.runtime.sendMessage({type: "final", exchange: exchange});
 		}
 	}
 );
+
+chrome.extension.getBackgroundPage().console.log('extension opened');
 
 function checkCurrency(text) {
   var matches = text.match(/\d+/g);
@@ -27,8 +35,11 @@ function checkCurrency(text) {
           //Currency symbol in text, scrape all digits 
           var amount = text.match(/\d/g);
           amount = amount.join("");
+          alert("returns!");
 
-          getExData(currency.iso, amount);
+          var value = {currency: currency.iso, amount: amount};
+          alert("8"+value.currency);
+          return value;
         }
       }
     }
@@ -53,6 +64,7 @@ function getExData(currency, amount) {
         chrome.extension.getBackgroundPage().console.log(xhr.response);
         chrome.extension.getBackgroundPage().console.log(resp.to[0].mid);
         chrome.extension.getBackgroundPage().console.log(resp.to.mid);
+        return resp.to.mid;
 
       } else {
         alert("Request Failed. Check console for details.");

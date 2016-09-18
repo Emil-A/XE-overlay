@@ -67,12 +67,20 @@ function processMatchedText(currency, selectedText) {
 //callback(originaliso, originalamount, resp.to[0].mid);
 function pushtoContent(originaliso, originalamount, convertedamount) {
 
-  chrome.runtime.sendMessage({
-    originaliso: originaliso,
-    originalamount: originalamount,
-    convertedamount: convertedamount,
-    convertediso: convertediso
+  chrome.tabs.query({
+    active: true,
+    currentWindow: true
+  }, function(tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, {
+      originaliso: originaliso,
+      originalamount: originalamount,
+      convertedamount: convertedamount,
+      convertediso: convertediso
+    }, function(response) {});
   });
+
+
+
 }
 
 function isValid(currency) { //returns true if obsolete, false if not
@@ -116,11 +124,11 @@ function fetchXE(originaliso, originalamount, callback) { //logs amount and curr
   user = "hackthenorth067";
   pass = "Waterloo1756";
   xhr.open("GET", "https://xecdapi.xe.com/v1/convert_from.json/?from=" + originaliso + "&to=" + convertediso + "&amount=" + originalamount, true);
-  xhr.withCredentials = true; 
+  xhr.withCredentials = true;
   xhr.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
 
   xhr.onreadystatechange = function() {
-        chrome.extension.getBackgroundPage().console.log(callback);
+    chrome.extension.getBackgroundPage().console.log(callback);
 
     if (xhr.readyState === 4) {
       if (xhr.status === 200) {

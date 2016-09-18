@@ -11,7 +11,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 	overlay.style.width = "190px";
 	overlay.style.height = "40px";
 	var image = document.createElement('img');
-	image.setAttribute("src", "images/38x38.png");
+	image.setAttribute("src", "https://lh4.ggpht.com/pA0yy39qG6kTONrhPu8nZAgCG79NPQ6j8wcFMgeC_-WgAeKQ4uZgWlvET2fnGYCKUg=w38");
 	overlay.style.position = 'absolute';
 	overlay.style.left = x + 30 + 'px';
 	overlay.style.top = y + 20 + 'px';

@@ -1,21 +1,29 @@
-chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-		if(message.type == "display") {
-			//display button
-			chrome.runtime.sendMessage({type: "submit"});
-		}
+var x = null; //x and y coordinates for mouse position
+var y = null;
 
-		if(message.type == "final") {
-			//display final exchange rate
-			alert(message.exchange);
-		}
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+			//display button
+
+			//insert button to DOM
+			var button = document.createElement('button');
+			button.style.position = 'absolute';
+			button.style.left = x + 'px';
+			button.style.top = y + 'px';
+			document.body.appendChild(button);
+			console.log(message);
+
+			// chrome.runtime.sendMessage({type: "submit"});
+
+
 	}
 );
 
 document.onmouseup = function(e) {
-  var x = e.pageX;
-  var y = e.pageY;
+  x = e.pageX;
+  y = e.pageY;
   getSelectionText();
 };
+
 
 function getSelectionText() {
 	var text = "";
@@ -30,4 +38,3 @@ function getSelectionText() {
 	}
 	return text;
 }
-

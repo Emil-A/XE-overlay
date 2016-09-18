@@ -112,7 +112,7 @@ function findCurrencyName(selectedText, currencies) { //returns iso if matched w
 
 
 function returnDigits(s) {
-  return s.match(/\d+/g).join(""); //returns integer of all the digits
+  return s.match(/\d+(?:\.\d+)?/).join(""); //returns integer of all the digits
 }
 
 

@@ -8,7 +8,6 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 
 	var overlay = document.createElement('div');
 	overlay.id = 'currencyOverlay';
-	overlay.style.width = "250px";
 	overlay.style.height = "40px";
 	var image = document.createElement('img');
 	image.setAttribute("src", "https://lh4.ggpht.com/pA0yy39qG6kTONrhPu8nZAgCG79NPQ6j8wcFMgeC_-WgAeKQ4uZgWlvET2fnGYCKUg=w38");
@@ -18,7 +17,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 	overlay.style.backgroundColor = "#ADD8E6";
 	overlay.style.borderRadius = "10px";
 	overlay.innerHTML = exchangeinfo.originalamount + " " + exchangeinfo.originaliso + " = " + exchangeinfo.convertedamount + " " + exchangeinfo.convertediso;
-	overlay.innerHTML
+	overlay.style.width = overlay.innerHTML.length*8+12+"px";
 	document.body.appendChild(overlay);
 	overlay.appendChild(image);
 
